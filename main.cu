@@ -8,6 +8,7 @@ __global__ void GPU(const double* d, double* out){
     }
 }
 
+// CPU example with showing time of execution
 void testCPU(int count, const double* arr){
     clock_t start = clock();
     auto* out = new double[count];
@@ -21,6 +22,7 @@ void testCPU(int count, const double* arr){
     printf("The time: %f seconds\n", seconds);
 }
 
+// GPU example with showing time of execution
 void testGPU(int count, const double* arr){
     clock_t start = clock();
     double* aa, *out_;
@@ -40,11 +42,13 @@ void testGPU(int count, const double* arr){
 }
 int main()
 {
+    // starting experiment 
     int count = 1000000;
     auto* arr = new double[count];
     for(int i = 0; i < count; i++){
         arr[i] = 100000;
     }
+    // testing
     //testCPU(count, arr);
     testGPU(count, arr);
 
