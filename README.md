@@ -27,10 +27,11 @@ load plugin
 ```
 Now we are done! To run code with CUDA we need to paste  ```%%cu``` in the start of the cell 
 
-### What length of vectors was in test?
+## First example: increasing values at vectors
+### What lengths of vectors were in test?
 This lengths were choosen : 10,50,100,200,500,1000,5000,10000,50000,100000,200000,500000,1000000
 
-### Code(with all counts):
+### Code(with all counts(sizes) on CPU and GPU):
 ```c++
 %%cu
 #include "cstdio"
@@ -104,5 +105,111 @@ int main()
 ##### On all counts:
 ![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu_time-3.jpg?raw=True "Diagram 3")
 
-## Conclusion:
+### Conclusion:
 The use of GPU(CUDA) is effective for large vector sizes if we compare with CPU (in our example, starting from the size of 200, this can be seen in diagrams 2 and 3). On small sizes, due to additional initialization operations, the use of GPU(CUDA) is inefficient, as can be easily seen in the first diagram. Moreover, with a size of 200, the difference is insignificant, but with a size of 1.000.000. the GPU(CUDA) is 125 times more efficient than CPU.
+
+## Second example : Single-precision A*X Plus Y(SAXPY)
+We will do same comparing, but on another sizes and on another algorithm
+### Sizes that were in the test:
+500000,1000000,2500000,5000000,10000000,50000000,100000000
+### Code for GPU(with all counts(sizes)):
+```c++
+%%cu
+#include <stdio.h>
+#include "cstdio"
+#include "ctime"
+
+__global__
+void saxpy(int n, float a, float *x, float *y)
+{
+  int i = blockIdx.x*blockDim.x + threadIdx.x;
+  if (i < n) y[i] = a*x[i] + y[i];
+}
+
+int main(void)
+{
+  int counts[] = { 500000,1000000,2500000,5000000,10000000,50000000,100000000 };
+  for(int j = 0;j<7;j++){
+    int N = counts[j];
+    float *x, *y, *d_x, *d_y;
+    x = (float*)malloc(N*sizeof(float));
+    y = (float*)malloc(N*sizeof(float));
+
+    cudaMalloc(&d_x, N*sizeof(float)); 
+    cudaMalloc(&d_y, N*sizeof(float));
+
+    for (int i = 0; i < N; i++) {
+      x[i] = 1.0f;
+      y[i] = 2.0f;
+    }
+
+    cudaMemcpy(d_x, x, N*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_y, y, N*sizeof(float), cudaMemcpyHostToDevice);
+    clock_t start = clock();
+    // Perform SAXPY on N elements
+    saxpy<<<(N+255)/256, 256>>>(N, 2.0f, d_x, d_y);
+    clock_t end = clock();
+    double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("The time: %f seconds\n", seconds);
+
+    cudaMemcpy(y, d_y, N*sizeof(float), cudaMemcpyDeviceToHost);
+
+    float maxError = 0.0f;
+    for (int i = 0; i < N; i++)
+      maxError = max(maxError, abs(y[i]-4.0f));
+    
+    //printf("Max error: %f\n", maxError);
+
+    cudaFree(d_x);
+    cudaFree(d_y);
+    free(x);
+    free(y);
+  }
+}
+```
+### Code for CPU
+```c++
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+// same exampel but on cpu
+// let's not calculate loss
+// saxpy
+void saxpy_cpu(float* x, float* y, int N, float a) {
+    for (int i = 0; i < N; i++) y[i] = a * x[i] + y[i];
+}
+// main
+int main() {
+    // sizes of arrays
+    int counts[] = { 500000,1000000,2500000,5000000,10000000,50000000,100000000};
+    for (int j = 0; j < 7; j++) {
+        int N = counts[j];
+        float* x, * y;
+        x = (float*)malloc(N * sizeof(float));
+        y = (float*)malloc(N * sizeof(float));
+        for (int i = 0; i < N; i++) {
+            x[i] = 1.0f;
+            y[i] = 2.0f;
+        }
+        // experiment
+        clock_t start = clock();
+        saxpy_cpu(x, y, N, 2.0f);
+        clock_t end = clock();
+        double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+        printf("The time: %f seconds\n", seconds);
+        free(x);
+        free(y);
+    }
+    return 0;
+}
+```
+### Result of calculations:
+##### Table of results
+![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu2_table.jpg?raw=True "Table 2")
+#### Diagrams of results:
+##### On counts :  500000,1000000
+![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu2_time1.jpg?raw=True "Diagram2-1")
+##### On all counts:
+![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu2_time2.jpg?raw=True "Diagram2-2")
+### Conclusion:
+Again: usage of GPU(CUDA) is so effective with large vectors. In this example we take only large vectors, and it is easy to see that GPU works much faster.
