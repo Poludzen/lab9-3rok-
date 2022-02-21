@@ -100,7 +100,7 @@ int main()
 ##### On counts : 10,50,100,200
 ![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu_time-1.jpg?raw=True "Diagram 1")
 ##### On counts : 10,50,100,200,500,1000
-![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu_time-2.jpg?raw=True "Diagram 2")
+![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu_time-4.jpg?raw=True "Diagram 2")
 ##### On all counts:
 ![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu_time-3.jpg?raw=True "Diagram 3")
 
