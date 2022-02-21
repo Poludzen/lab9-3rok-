@@ -207,7 +207,7 @@ int main() {
 ##### Table of results
 ![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu2_table.jpg?raw=True "Table 2")
 #### Diagrams of results:
-##### On counts :  500000,1000000
+##### On counts :  500000,1000000,2500000
 ![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu2_time-1.jpg?raw=True "Diagram2-1")
 ##### On all counts:
 ![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu2_time-2.jpg?raw=True "Diagram2-2")
