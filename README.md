@@ -106,4 +106,3 @@ int main()
 
 ## Conclusion:
 The use of GPU(CUDA) is effective for large vector sizes if we compare with CPU (in our example, starting from the size of 200, this can be seen in diagrams 2 and 3). On small sizes, due to additional initialization operations, the use of GPU(CUDA) is inefficient, as can be easily seen in the first diagram. Moreover, with a size of 200, the difference is insignificant, but with a size of 1.000.000. the GPU(CUDA) is 125 times more efficient than CPU.
-
