@@ -208,8 +208,8 @@ int main() {
 ![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu2_table.jpg?raw=True "Table 2")
 #### Diagrams of results:
 ##### On counts :  500000,1000000
-![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu2_time1.jpg?raw=True "Diagram2-1")
+![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu2_time-1.jpg?raw=True "Diagram2-1")
 ##### On all counts:
-![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu2_time2.jpg?raw=True "Diagram2-2")
+![alt text](https://github.com/Poludzen/lab9-3rok-/blob/main/images/cuda_vs_cpu2_time-2.jpg?raw=True "Diagram2-2")
 ### Conclusion:
 Again: usage of GPU(CUDA) is so effective with large vectors. In this example we take only large vectors, and it is easy to see that GPU works much faster.
